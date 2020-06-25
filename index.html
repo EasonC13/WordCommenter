@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>English Word Commenter</title>
+        <!--script src="https://d3js.org/d3.v4.js"></script-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <!--link rel="stylesheet" type="text/css" href="./main.css"-->
+    </head>
+    <body>
+        <script language="javascript">
+            function replaceAll(string, search, replace) {
+                return string.split(search).join(replace);
+            }
+
+            function Start(){
+                var text = document.getElementById("target").value;
+                var nextLine = String.fromCharCode(10);
+                text = replaceAll(text, nextLine, "<br>")
+                console.log(text)
+                url = "http://gcp4-web.easonc.tw/translate-multi?text="+text;
+                data = fetch(url)
+                .then(function(response) {
+                    data = response.json().then(function(data){
+                        text = replaceAll(data.text, "<br>", nextLine);
+                        document.getElementById("target").value = text;
+                    })
+                })
+            }
+            
+            </script>
+    <textarea id="target" style='height:90%;width:100%;margin:auto'></textarea>
+    <button type="button" style='height:10%;margin:auto' onclick="Start()">Send and Add Chinese Translation.</button>
+
+ </body>
+ </html>
