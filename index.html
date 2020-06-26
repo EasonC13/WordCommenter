@@ -22,12 +22,12 @@
         <meta property="twitter:description" content="簡單強大的單字註記工具
         提高你紀錄單字的效率">
         <meta property="twitter:image" content="https://easonc13.github.io/WordCommenter/featureImg.png">
-        <!--script src="https://d3js.org/d3.v4.js"></script-->
+        <script src="https://d3js.org/d3.v4.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
         <link rel=stylesheet type="text/css" href="main.css">
     </head>
     <body>
-        <h1>Word-Commenter</h1>
+        <h1 id="title">Word-Commenter</h1>
         <script language="javascript">
             function replaceAll(string, search, replace) {
                 return string.split(search).join(replace);
@@ -49,11 +49,14 @@
                         text = decodeURIComponent(text);
                         console.log(text);
                         document.getElementById("target").value = text;
+                        origin = document.getElementById("title").innerHTML;
+                        document.getElementById("title").innerHTML = origin + "  (Done)"
+                        setTimeout(() => { document.getElementById("title").innerHTML = origin; }, 10000);
                     })
                 })
             }
             
-            function myFunction() {
+            function copy() {
                 /* Get the text field */
                 var copyText = document.getElementById("target");
 
@@ -73,14 +76,16 @@
     <textarea id="target" style='height:80%;width:100%;margin:auto;font-size:150%;'></textarea>
     <div class="tooltip copy">
         <span class="tooltiptext" id="myTooltip">Add Comment</span>
-        <button type="button" style='margin:auto;' onclick="Start()">Send and Add Chinese Translation.</button>
+        <button type="button" style='margin:auto;' onclick="Start()" class="w3-button">Comment</button>
     </div>
     <div class="tooltip">
         <span class="tooltiptext" id="myTooltipCopy">Copy to clipboard</span>
-        <button style='margin:auto;' onclick="myFunction()" class="w3-button w3-border w3-light-grey w3-left w3-mobile">
+        <button style='margin:auto;' onclick="copy()" class="w3-button w3-border w3-light-grey w3-left w3-mobile">
             Copy
             </button>
     </div>
+
+
     <div class="tooltip" style="right:0%;position:relative;">
         <span class="tooltiptext" id="myTooltip">Tutorial</span>
         <button onClick="document.getElementById('tutorial').scrollIntoView({behavior:'smooth'});" class="w3-button w3-border w3-light-grey w3-left w3-mobile">
@@ -97,7 +102,7 @@
     <div id="tutorial">
         <hr>
         <h2>Tutorial 使用教學</h2>
-        <p><img src="./tutorial-eng.png" alt="" style="max-width: 50%;"></p>
+        <p><img src="./tutorial-eng.png" class='picture' alt="" style="max-width: 50%;"></p>
         <ol>
             <li>Put your English words into each line. <br>將你的英文單字放在這裡，每個單字一行。</li><br>
             <li>Press the button. <br>按下按鈕</li><br>
@@ -106,7 +111,21 @@
             </ol>
         
         <h2>Word-Commenter 也支援其他語言的註記喔！（如日文）</h2>
-        <p><img src="./tutorial-otherLang.png" alt="" style="max-width: 50%;"></p>
+        <p><img src="./tutorial-otherLang.png" class='picture' alt="" style="max-width: 50%;"></p>
     </div>
+    <script>
+        //React
+        width = window.innerWidth;
+        height = window.innerHeight;
+        console.log(width, height);
+        if(width/height  <= 0.7 ){
+            d3.selectAll(".picture").attr("style", "").attr("width","500");
+            d3.selectAll(".tooltip").selectAll(".w3-button")
+            .attr("style", "padding:15px 15px; font-size:400%");
+            d3.selectAll(".tooltiptext")
+            .attr("style", "font-size:400%;width:100%");
+        }else{
+        }
+    </script>
  </body>
  </html>
