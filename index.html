@@ -15,13 +15,18 @@
             function Start(){
                 var text = document.getElementById("target").value;
                 var nextLine = String.fromCharCode(10);
-                text = replaceAll(text, nextLine, "<br>")
-                console.log(text)
+                //text = replaceAll(text, nextLine, "<br>")
+                text = encodeURIComponent(text);
+                //text = btoa(text);
+                console.log(text);
                 url = "https://gcp4-web.easonc.tw/translate-multi?text="+text;
                 data = fetch(url)
                 .then(function(response) {
                     data = response.json().then(function(data){
-                        text = replaceAll(data.text, "<br>", nextLine);
+                        //text = replaceAll(data.text, "<br>", nextLine);
+                        text = data.text;
+                        text = decodeURIComponent(text);
+                        console.log(text);
                         document.getElementById("target").value = text;
                     })
                 })
