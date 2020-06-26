@@ -19,7 +19,7 @@
                 text = encodeURIComponent(text);
                 //text = btoa(text);
                 console.log(text);
-                url = "https://gcp4-web.easonc.tw/translate-multi?text="+text;
+                url = "https://translate-english-backend.tsraise.com/translate-multi?text="+text;
                 data = fetch(url)
                 .then(function(response) {
                     data = response.json().then(function(data){
