@@ -33,6 +33,8 @@ def getTranslation(text, method = "AllFreq"):
         return getOneTranslation(browser)
 
 def getOneTranslation(browser):
+    return browser.find_element_by_xpath("/html/body/div[2]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[3]/div[1]/div[2]/div/span[1]").text
+
     target = browser.find_element_by_css_selector(".container")
     target = target.find_element_by_css_selector(".tlid-results-container")
     target = target.find_element_by_css_selector(".tlid-result")
@@ -70,6 +72,9 @@ from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile, H
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import uvicorn
 import time
+from base64 import b64encode, b64decode
+from urllib.parse import unquote, quote 
+
 
 
 
@@ -100,14 +105,17 @@ async def translate(text: str = ""):
 
 @app.get("/translate-multi")
 async def translate_multi(text: str = ""):
-    texts = text
+    texts = unquote(text)
     print(texts)
-    texts = texts.split("<br>")
+    texts = texts.split("\n")
     out = []
     for text in texts:
         if text != "":
+            getTranslation(text)
             text = text + "  " + getTranslation(text)
         out.append(text)
-    out = "<br>".join(out)
+    out = "\n".join(out)
+    out = quote(out)
+    print(out)
     return {"text":out}
 
