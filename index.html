@@ -1,12 +1,13 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>English Word Commenter</title>
+        <title>Eng-Commenter</title>
         <!--script src="https://d3js.org/d3.v4.js"></script-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-        <!--link rel="stylesheet" type="text/css" href="./main.css"-->
+        <link rel=stylesheet type="text/css" href="main.css">
     </head>
     <body>
+        <h1>Word-Commenter</h1>
         <script language="javascript">
             function replaceAll(string, search, replace) {
                 return string.split(search).join(replace);
@@ -32,9 +33,60 @@
                 })
             }
             
-            </script>
-    <textarea id="target" style='height:80%;width:100%;margin:auto'></textarea>
-    <button type="button" style='height:10%;margin:auto' onclick="Start()">Send and Add Chinese Translation.</button>
+            function myFunction() {
+                /* Get the text field */
+                var copyText = document.getElementById("target");
 
+                /* Select the text field */
+                copyText.select();
+                copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+
+                /* Alert the copied text */
+                originText = document.getElementById("myTooltipCopy").innerHTML
+                document.getElementById("myTooltipCopy").innerHTML = "Copied!"
+                setTimeout(() => { document.getElementById("myTooltipCopy").innerHTML = originText; }, 2000);
+                }
+            </script>
+    <textarea id="target" style='height:80%;width:100%;margin:auto;font-size:150%;'></textarea>
+    <div class="tooltip copy">
+        <span class="tooltiptext" id="myTooltip">Add Comment</span>
+        <button type="button" style='margin:auto;' onclick="Start()">Send and Add Chinese Translation.</button>
+    </div>
+    <div class="tooltip">
+        <span class="tooltiptext" id="myTooltipCopy">Copy to clipboard</span>
+        <button style='margin:auto;' onclick="myFunction()" class="w3-button w3-border w3-light-grey w3-left w3-mobile">
+            Copy
+            </button>
+    </div>
+    <div class="tooltip" style="right:0%;position:relative;">
+        <span class="tooltiptext" id="myTooltip">Tutorial</span>
+        <button onClick="document.getElementById('tutorial').scrollIntoView({behavior:'smooth'});" class="w3-button w3-border w3-light-grey w3-left w3-mobile">
+            How to use this?
+            </button>
+    </div>
+    <div>
+        <p>原始碼請見<a href="https://github.com/EasonC13/EngCommenter"> EasonC13 的 GitHub</a></p>
+        <h2 id="-">創作緣起</h2>
+        <p>因為 Eason 有在練英文，最近主要的學習方式是讀網路文章。但是發現自己為方便記憶單字，習慣將單字複製起來後，事後再去 Google 翻譯 找相對應的單字，然後再貼在後面，再來一個個背。</p>
+        <p>這樣實在是非常麻煩，於是 Eason 發功，花了一個晚上把 Word-Commenter 刻出來，期待讓大家可以省下查找單字的時間，讓學習英文更有效率。</p>
+        <p>本服務使用 <a href="https://github.com/EasonC13/WordCommenter/tree/gh-pages/back-end">Python 爬蟲後端</a> 搭配 <a href="https://easonc13.github.io/WordCommenter/">網頁前端</a> 作為服務，</p>
+    </div>
+    <div id="tutorial">
+        <hr>
+        <h2>Tutorial 使用教學</h2>
+        <p><img src="https://i.imgur.com/9BHRg3t.png" alt="" style="max-width: 50%;"></p>
+        <ol>
+            <li>Put your English words into each line. <br>將你的英文單字放在這裡，每個單字一行。</li><br>
+            <li>Press the button. <br>按下按鈕</li><br>
+            <li>Wait a short while. <br>稍待片刻</li><br>
+            <li>Copy the result after the change. <br>等註解出現後將結果複製起來。</li><br>
+            </ol>
+        
+        <h2>Word-Commenter 也支援其他語言的註記喔！（如日文）</h2>
+        <p><img src="https://i.imgur.com/AUjnzGD.png" alt="" style="max-width: 50%;"></p>
+    </div>
  </body>
  </html>
