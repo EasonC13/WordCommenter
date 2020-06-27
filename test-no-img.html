@@ -1,0 +1,170 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- Primary Meta Tags -->
+        <title>Word-Commenter</title>
+        <meta name="title" content="Word-Commenter">
+        <meta name="description" content="簡單強大的單字註記工具
+        提高你紀錄單字的效率">
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://easonc13.github.io/WordCommenter/index.html">
+        <meta property="og:title" content="Word-Commenter">
+        <meta property="og:description" content="簡單強大的單字註記工具
+        提高你紀錄單字的效率">
+ 
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <link rel=stylesheet type="text/css" href="main.css">
+    </head>
+    <body>
+        <h1 id="title">Word-Commenter</h1>
+        <script>
+            //設定cookie
+            function setCookie(cname, cvalue, exdays=1) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname  + "=" +  cvalue + "; " + expires;
+            }
+
+            //獲取cookie
+            function readCookie(name) {
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0;i < ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                }
+                return null;
+            }
+        </script>
+
+        <script language="javascript">
+            function replaceAll(string, search, replace) {
+                return string.split(search).join(replace);
+            }
+
+            function Start(){
+                var text = document.getElementById("target").value;
+                var nextLine = String.fromCharCode(10);
+                text = encodeURIComponent(text);
+                console.log(text);
+                url = "https://translate-english-backend.tsraise.com/translate-multi?text="+text;
+                data = fetch(url)
+                .then(function(response) {
+                    data = response.json().then(function(data){
+                        console.log(data);
+                        outJson = data.json;
+                        setCookie("outJson", JSON.stringify(outJson));
+                        text = data.text;
+                        text = decodeURIComponent(text);
+                        console.log(text);
+                        document.getElementById("target").value = text;
+                        origin = document.getElementById("title").innerHTML;
+                        document.getElementById("title").innerHTML = origin + "  (Done)"
+                        setTimeout(() => { document.getElementById("title").innerHTML = origin; }, 10000);
+                    })
+                })
+            }
+            
+            function copy() {
+                /* Get the text field */
+                var copyText = document.getElementById("target");
+
+                /* Select the text field */
+                copyText.select();
+                copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+
+                /* Alert the copied text */
+                originText = document.getElementById("myTooltipCopy").innerHTML
+                document.getElementById("myTooltipCopy").innerHTML = "Copied!"
+                setTimeout(() => { document.getElementById("myTooltipCopy").innerHTML = originText; }, 2000);
+                }
+
+            function toQuizlet(){
+
+            }
+            </script>
+
+    <textarea id="target" style='height:80%;width:100%;margin:auto;font-size:150%;'></textarea>
+    <div class="tooltip copy">
+        <span class="tooltiptext" id="myTooltip">Add Comment</span>
+        <button type="button" style='margin:auto;' onclick="Start()" class="w3-button">Comment</button>
+    </div>
+    <div class="tooltip" id="copy">
+        <span class="tooltiptext" id="myTooltipCopy">Copy to clipboard</span>
+        <button style='margin:auto;' onclick="copy()" class="w3-button w3-border w3-light-grey w3-left w3-mobile">
+            Copy
+            </button>
+    </div>
+
+
+    <div class="tooltip" style="right:0%;position:relative;">
+        <span class="tooltiptext" id="myTooltip">Tutorial</span>
+        <button onClick="document.getElementById('tutorial').scrollIntoView({behavior:'smooth'});" class="w3-button w3-border w3-light-grey w3-left w3-mobile">
+            How to use this?
+            </button>
+    </div>
+
+    <div class="tooltip" style="right:0%;position:relative;">
+        <span class="tooltiptext" id="myTooltip">Tutorial</span>
+        <button onClick="document.getElementById('toQuizlet').scrollIntoView({behavior:'smooth'});" class="w3-button w3-border w3-light-grey w3-left w3-mobile">
+            To Quizlet
+            </button>
+    </div>
+
+    <div>
+        <p>原始碼請見<a href="https://github.com/EasonC13/EngCommenter"> EasonC13 的 GitHub</a></p>
+        <h2 id="-">創作緣起</h2>
+        <p>因為 Eason 有在練英文，最近主要的學習方式是讀網路文章。但是發現自己為方便記憶單字，習慣將單字複製起來後，事後再去 Google 翻譯 找相對應的單字，然後再貼在後面，再來一個個背。</p>
+        <p>這樣實在是非常麻煩，於是 Eason 發功，花了一個晚上把 Word-Commenter 刻出來，期待讓大家可以省下查找單字的時間，讓學習英文更有效率。</p>
+        <p>本服務使用 <a href="https://github.com/EasonC13/WordCommenter/tree/gh-pages/back-end">Python 爬蟲後端</a> 搭配 <a href="https://easonc13.github.io/WordCommenter/">網頁前端</a> 作為服務，</p>
+    </div>
+    <div id="tutorial">
+        <hr>
+        <h2>Tutorial 使用教學</h2>
+        <p><img src="./tutorial-eng.png" class='picture' alt="" style="max-width: 50%;"></p>
+        <ol>
+            <li>Put your English words into each line. <br>將你的英文單字放在這裡，每個單字一行。</li><br>
+            <li>Press the button. <br>按下按鈕</li><br>
+            <li>Wait a short while. <br>稍待片刻</li><br>
+            <li>Copy the result after the change. <br>等註解出現後將結果複製起來。</li><br>
+            </ol>
+        
+        <h2>Word-Commenter 也支援其他語言的註記喔！（如日文）</h2>
+        <p><img src="./tutorial-otherLang.png" class='picture' alt="" style="max-width: 50%;"></p>
+    </div>
+    <hr>
+    <div id="toQuizlet">
+        <h2 id="-quizlet-">如何將註記好的結果匯入 Quizlet?</h2>
+        <ol>
+        <li>使用 Copy 複製 Word-Commenter 註記好的內容。</li>
+        <li><a href="https://quizlet.com/login" target="_blank">登入</a>你的Quizlet帳戶。</li>
+        <li>點選建立。</li>
+        <li>點選「自Word、Excel、Google文件等匯入」</li>
+        <li>貼上剛剛複製的內容</li>
+        <li>完成啦！</li>
+        </ol>
+    </div>
+    <script>
+        //React
+        width = window.innerWidth;
+        height = window.innerHeight;
+        console.log(width, height);
+        if(width/height  <= 0.7 ){
+            d3.selectAll(".picture").attr("style", "").attr("width","500");
+            d3.selectAll(".tooltip").selectAll(".w3-button")
+            .attr("style", "padding:15px 15px; font-size:400%");
+            d3.selectAll(".tooltiptext")
+            .attr("style", "font-size:400%;width:100%");
+        }else{
+        }
+    </script>
+ </body>
+ </html>
