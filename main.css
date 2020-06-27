@@ -26,5 +26,8 @@
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
-
+.w3-button{
+  font-size:200%;
+  margin-top:10px;
+}
 
