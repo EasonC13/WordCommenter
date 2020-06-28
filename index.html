@@ -61,6 +61,8 @@
                 text = encodeURIComponent(text);
                 console.log(text);
                 url = "https://translate-english-backend.tsraise.com/translate-multi?text="+text;
+                origin = document.getElementById("title").innerHTML;
+                document.getElementById("title").innerHTML = origin + "  (Pending)"
                 data = fetch(url)
                 .then(function(response) {
                     data = response.json().then(function(data){
@@ -71,7 +73,6 @@
                         text = decodeURIComponent(text);
                         console.log(text);
                         document.getElementById("target").value = text;
-                        origin = document.getElementById("title").innerHTML;
                         document.getElementById("title").innerHTML = origin + "  (Done)"
                         setTimeout(() => { document.getElementById("title").innerHTML = origin; }, 10000);
                     })
