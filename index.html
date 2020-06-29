@@ -26,7 +26,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
         <link rel=stylesheet type="text/css" href="main.css">
     </head>
-    <body>
+    <body class="body">
         <h1 id="title">Word-Commenter</h1>
         <script>
             //設定cookie
@@ -51,6 +51,8 @@
         </script>
 
         <script language="javascript">
+            TITLE = document.getElementById("title").innerHTML;
+
             function replaceAll(string, search, replace) {
                 return string.split(search).join(replace);
             }
@@ -61,8 +63,7 @@
                 text = encodeURIComponent(text);
                 console.log(text);
                 url = "https://translate-english-backend.tsraise.com/translate-multi?text="+text;
-                origin = document.getElementById("title").innerHTML;
-                document.getElementById("title").innerHTML = origin + "  (Pending)"
+                document.getElementById("title").innerHTML = TITLE + "  (Pending)"
                 data = fetch(url)
                 .then(function(response) {
                     data = response.json().then(function(data){
@@ -73,8 +74,8 @@
                         text = decodeURIComponent(text);
                         console.log(text);
                         document.getElementById("target").value = text;
-                        document.getElementById("title").innerHTML = origin + "  (Done)"
-                        setTimeout(() => { document.getElementById("title").innerHTML = origin; }, 10000);
+                        document.getElementById("title").innerHTML = TITLE + "  (Done)"
+                        setTimeout(() => { document.getElementById("title").innerHTML = TITLE; }, 10000);
                     })
                 })
             }
@@ -127,7 +128,6 @@
             To Quizlet
             </button>
     </div>
-
     <div>
         <p>原始碼請見<a href="https://github.com/EasonC13/EngCommenter"> EasonC13 的 GitHub</a></p>
         <h2 id="-">創作緣起</h2>
