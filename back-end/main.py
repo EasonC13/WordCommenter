@@ -14,17 +14,17 @@ def createBrowser():
     return browser
 
 
-def getTranslation(text, method = "AllFreq"):
+def getTranslation(text, browser, method = "AllFreq"):
     text = text.lower()
-    text.replace(" ", "%20")
+    text = quote(text)
     browser.get('https://translate.google.com.tw/?hl=zh-TW#view=home&op=translate&sl=auto&tl=zh-TW&text=%s'%text) # 進入網頁
-    for i in range(5):
+    from time import sleep
+    sleep(0.01)
+    for i in range(2):
         try:
             result = getAllTranslationByFreq(browser)
             break
         except:
-            from time import sleep
-            sleep(0.5)
             continue
     
     if 'result' in locals() and len(result) > 0:
@@ -75,6 +75,7 @@ import time
 from base64 import b64encode, b64decode
 from urllib.parse import unquote, quote 
 
+import datetime
 
 
 
@@ -91,8 +92,7 @@ app.add_middleware(
 )
 
 
-browser = createBrowser()
-
+#browser = createBrowser()
 
 
 
@@ -104,18 +104,27 @@ async def translate(text: str = ""):
     return {"text":text}
 
 @app.get("/translate-multi")
-async def translate_multi(text: str = ""):
-    texts = unquote(text)
-    print(texts)
-    texts = texts.split("\n")
-    out = []
-    for text in texts:
-        if text != "":
-            getTranslation(text)
-            text = text + "  " + getTranslation(text)
-        out.append(text)
-    out = "\n".join(out)
-    out = quote(out)
-    print(out)
-    return {"text":out}
+async def translate_multi(request: Request, text: str = ""):
+    try:
+        browser = createBrowser()
+        texts = unquote(text)
+        print(datetime.datetime.now())
+        print(texts)
+        texts = texts.split("\n")
+        out = []
+        outJson = {}
+        for text in texts:
+            if text != "":
+                print(text, getTranslation(text, browser))
+                result = getTranslation(text, browser)
+                outJson[text] = result
+                text = text + chr(9) + result
+            out.append(text)
+        out = "\n".join(out)
+        out = quote(out)
+        #print(out)
+        browser.close()
+        return {"text":out, "json":outJson}
+    except:
+        browser.close()
 
